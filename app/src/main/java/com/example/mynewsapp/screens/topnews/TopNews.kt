@@ -39,7 +39,9 @@ fun TopNews(navController: NavHostController) {
         LazyColumn{
             items(MockData.topNewsList){ newsData->
                 //Todo 7: Use TopNewsItem as the UI and pass in the result from the items
-                TopNewsItem(newsData = newsData)
+                TopNewsItem(newsData = newsData,
+                    onClickArticle = { navController.navigate(NavigationItem.DetailScreen.route + "/${newsData.id}") }
+                    )
             }
         }
     }
@@ -47,8 +49,10 @@ fun TopNews(navController: NavHostController) {
 
 
 @Composable
-fun TopNewsItem(newsData: NewsData) {
-    Box(modifier = Modifier.height(200.dp).padding(8.dp)) {
+fun TopNewsItem(newsData: NewsData,onClickArticle : () -> Unit) {
+    Box(modifier = Modifier.height(200.dp).padding(8.dp).clickable {
+        onClickArticle()
+    }) {
         Image(painter = painterResource(id = newsData.image), contentDescription ="",contentScale = ContentScale.FillBounds)
         Column(modifier = Modifier
             .wrapContentHeight()

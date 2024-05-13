@@ -11,9 +11,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 
 @Composable
-fun DetailScreen(navController: NavHostController) {
+fun DetailScreen(navController: NavHostController,id : Int) {
     Column(modifier = Modifier.fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Detail Screen",
+        Text(text = "Detail Screen with id : $id",
             fontWeight = FontWeight.SemiBold ,
             modifier = Modifier.clickable { navController.popBackStack() }
         )
