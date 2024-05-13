@@ -69,4 +69,14 @@ dependencies {
 
     //NAVIGATION
     implementation(libs.androidx.navigation)
+
+    //Retrofit
+    implementation(libs.retrofit)
+
+    //GSON
+    implementation(libs.gsonConverter)
+
+    // Coroutines Kotlin android
+    implementation(libs.kotlinx.coroutines.android)
+
 }

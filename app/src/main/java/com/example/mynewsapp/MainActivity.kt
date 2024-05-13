@@ -1,6 +1,7 @@
 package com.example.mynewsapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.mynewsapp.navigation.AppNavHost
+import com.example.mynewsapp.retrofit.INewsApi
+import com.example.mynewsapp.retrofit.RetrofitHelper
 import com.example.mynewsapp.ui.theme.MyNewsAppTheme
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +30,15 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavHost(navController = rememberNavController())
+
+//                    val articlesApi = RetrofitHelper.getInstance().create(INewsApi::class.java)
+//
+//                    GlobalScope.launch {
+//                        val result = articlesApi.getTopHeadlines()
+//                        if (result != null){
+//                            Log.d("article result",result.body().toString())
+//                        }
+//                    }
                 }
             }
         }
