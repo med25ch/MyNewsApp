@@ -32,8 +32,7 @@ fun TopNews(navController: NavHostController) {
     Column(modifier = Modifier.fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
         //Todo 6:Add a Text with text as Top News and fontWeight od semi bold
         Text(text = "Top News",
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.clickable { navController.navigate(NavigationItem.DetailScreen.route) })
+            fontWeight = FontWeight.SemiBold)
 
 
         LazyColumn{

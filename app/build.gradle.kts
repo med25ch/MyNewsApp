@@ -79,4 +79,8 @@ dependencies {
     // Coroutines Kotlin android
     implementation(libs.kotlinx.coroutines.android)
 
+    // BottomNavigation
+    implementation(libs.material)
+
+
 }
