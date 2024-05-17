@@ -1,4 +1,4 @@
-package com.example.mynewsapp.models
+package com.example.mynewsapp.retrofit
 
 import com.google.gson.annotations.SerializedName
 
