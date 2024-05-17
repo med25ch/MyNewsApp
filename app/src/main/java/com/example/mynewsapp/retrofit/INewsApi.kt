@@ -1,8 +1,6 @@
 package com.example.mynewsapp.retrofit
 
-import com.example.mynewsapp.models.ArticlesResult
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,4 +16,5 @@ interface INewsApi {
         @Query("apiKey") apiKey : String,
         @Query("category") category : String,
     ) : Call<ArticlesResult>
+
 }

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hiltKotlinAndroid)
+    kotlin("kapt")
 }
 
 android {
@@ -82,5 +84,14 @@ dependencies {
     // BottomNavigation
     implementation(libs.material)
 
-
+    //Hilt
+    implementation(libs.hilt)
+    kapt(libs.kapt)
 }
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
+
+
