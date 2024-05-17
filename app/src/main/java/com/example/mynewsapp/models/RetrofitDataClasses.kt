@@ -27,5 +27,5 @@ data class ArticlesResult(
     @SerializedName("totalResults")
     var totalResults: Int? = null,
     @SerializedName("articles")
-    var articles: ArrayList<Article> = arrayListOf()
+    var articles: List<Article> = listOf()
 )

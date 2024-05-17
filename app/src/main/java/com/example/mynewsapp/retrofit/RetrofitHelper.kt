@@ -5,14 +5,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitHelper {
 
-    val baseUrl = "https://newsapi.org/"
+    private const val BASE_URL = "https://newsapi.org/v2/"
 
-    fun getInstance(): Retrofit {
-        return Retrofit.Builder().baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            // we need to add converter factory to
-            // convert JSON object to Java object
-            .build()
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .build()
+
+    val retrofitService : INewsApi by lazy {
+        retrofit.create(INewsApi::class.java)
     }
+
+//    fun getInstance(): Retrofit {
+//        return Retrofit.Builder().baseUrl(BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            // we need to add converter factory to
+//            // convert JSON object to Java object
+//            .build()
+//    }
 
 }
