@@ -8,13 +8,13 @@ interface INewsApi {
 
     @GET("top-headlines")
     suspend fun getTopHeadlines(@Query("country") country : String, @Query("apiKey") apiKey : String
-    ) : Call<ArticlesResult>
+    ) : ArticlesResult
 
     @GET("top-headlines")
     suspend fun getTopHeadlinesByCategory(
         @Query("country") country : String,
         @Query("apiKey") apiKey : String,
         @Query("category") category : String,
-    ) : Call<ArticlesResult>
+    ) : ArticlesResult
 
 }
