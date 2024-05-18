@@ -21,9 +21,11 @@ import com.example.mynewsapp.retrofit.INewsApi
 import com.example.mynewsapp.retrofit.RetrofitHelper
 import com.example.mynewsapp.screens.topnews.BottomNavigationBar
 import com.example.mynewsapp.ui.theme.MyNewsAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,21 +37,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NewsApp(navController = rememberNavController())
-//                    val articlesApi = RetrofitHelper.getInstance().create(INewsApi::class.java)
-//
-//                    GlobalScope.launch {
-//                        val result = articlesApi.getTopHeadlines()
-//                        if (result != null){
-//                            Log.d("article result",result.body().toString())
-//                        }
-//                    }
                 }
             }
         }
     }
 }
-
-
 
 
 @Composable
