@@ -76,6 +76,9 @@ dependencies {
     //Retrofit
     implementation(libs.retrofit)
 
+    //HttpLoggingInterceptor
+    implementation(libs.okhttp3)
+
     //GSON
     implementation(libs.gsonConverter)
 

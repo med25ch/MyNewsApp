@@ -6,15 +6,21 @@ import androidx.lifecycle.viewModelScope
 import com.example.mynewsapp.repositories.COUNTRY
 import com.example.mynewsapp.repositories.NewsArticlesRepo
 import com.example.mynewsapp.retrofit.ArticlesResult
+import com.example.mynewsapp.retrofit.INewsApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TopNewsViewModel @Inject constructor(private val newsArticlesRepo: NewsArticlesRepo): ViewModel() {
+class TopNewsViewModel @Inject constructor(
+    private val newsArticlesRepo: NewsArticlesRepo,
+    private val api : INewsApi
+): ViewModel() {
 
 
     private val _articlesResults = MutableStateFlow(ArticlesResult())
@@ -26,21 +32,37 @@ class TopNewsViewModel @Inject constructor(private val newsArticlesRepo: NewsArt
         get() = _isLoading
 
     init {
-        fetchArticlesResults()
+        fetchArticles()
     }
 
-    private fun fetchArticlesResults() {
-        viewModelScope.launch (Dispatchers.IO){
-            try {
-                _isLoading.value = true
-                _articlesResults.value = newsArticlesRepo.getArticlesByCountry(COUNTRY.US)
-                _isLoading.value = false
-            }catch (e : Exception){
-                Log.e("fetchArticlesResults", "Error fetching articles: ${e.message}")
-            }finally {
-                _isLoading.value = false
-            }
+    private fun fetchArticles(){
+        viewModelScope.launch {
+            newsArticlesRepo.getTopHeadlines(COUNTRY.MA)
+                .flowOn(Dispatchers.IO)
+                .catch {e ->
+                    Log.e("fetchArticles",
+                        "Error ${e.message} | Cause : ${e.cause}")
+                }
+                .collect{
+                    _articlesResults.value = it
+                }
         }
     }
+
+
+
+//    private fun fetchArticlesResults() {
+//        viewModelScope.launch (Dispatchers.IO){
+//            try {
+//                _isLoading.value = true
+//                _articlesResults.value = newsArticlesRepo.getArticlesByCountry(COUNTRY.US)
+//                _isLoading.value = false
+//            }catch (e : Exception){
+//                Log.e("fetchArticlesResults", "Error fetching articles: ${e.message}")
+//            }finally {
+//                _isLoading.value = false
+//            }
+//        }
+  //  }
 
 }

@@ -2,6 +2,7 @@ package com.example.mynewsapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,6 +12,7 @@ import com.example.mynewsapp.screens.categories.CategoriesScreen
 import com.example.mynewsapp.screens.detailscreen.DetailScreen
 import com.example.mynewsapp.screens.profile.ProfileScreen
 import com.example.mynewsapp.screens.topnews.TopNews
+import com.example.mynewsapp.screens.topnews.TopNewsViewModel
 
 @Composable
 fun AppNavHost(
@@ -43,7 +45,8 @@ fun AppNavHost(
         }
 
         composable(BottomNavItem.Home.route) {
-            TopNews(navController)
+            val viewModel = hiltViewModel<TopNewsViewModel>()
+            TopNews(navController,viewModel)
         }
     }
 }
