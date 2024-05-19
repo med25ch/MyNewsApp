@@ -1,7 +1,6 @@
 package com.example.mynewsapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,24 +8,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mynewsapp.navigation.AppNavHost
+import com.example.mynewsapp.repositories.NewsArticlesRepo
+import com.example.mynewsapp.retrofit.ApiHelper
 import com.example.mynewsapp.retrofit.INewsApi
-import com.example.mynewsapp.retrofit.RetrofitHelper
 import com.example.mynewsapp.screens.topnews.BottomNavigationBar
 import com.example.mynewsapp.ui.theme.MyNewsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -37,6 +35,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NewsApp(navController = rememberNavController())
+
                 }
             }
         }
