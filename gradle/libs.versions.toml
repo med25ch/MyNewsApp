@@ -14,8 +14,9 @@ kotlinxCoroutineVer = "1.7.3"
 materialVersion = "1.6.7"
 hiltVersion = "2.50"
 hiltNavigationVersion = "1.0.0"
-lifecycleRuntimeComposeAndroid = "2.8.0"
+lifecycleRuntimeComposeAndroid = "2.6.0"
 okhttpVersion = "4.12.0"
+coilVersion = "2.6.0"
 
 
 [libraries]
@@ -43,6 +44,8 @@ hilt = {group = "com.google.dagger", name = "hilt-android" ,version.ref = "hiltV
 hiltNavigation = {group = "androidx.hilt", name = "hilt-navigation-compose" ,version.ref = "hiltNavigationVersion"}
 androidx-lifecycle-runtime-compose-android = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeComposeAndroid" }
 okhttp3 = {group = "com.squareup.okhttp3", name = "logging-interceptor" ,version.ref = "okhttpVersion"}
+coil = {group = "io.coil-kt", name = "coil-compose" ,version.ref = "coilVersion"}
+
 
 
 

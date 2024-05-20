@@ -92,6 +92,9 @@ dependencies {
     implementation(libs.hilt)
     implementation(libs.hiltNavigation)
     kapt(libs.kapt)
+
+    //Coil
+    implementation(libs.coil)
 }
 
 // Allow references to generated code

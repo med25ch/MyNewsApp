@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mynewsapp.repositories.COUNTRY
 import com.example.mynewsapp.repositories.NewsArticlesRepo
+import com.example.mynewsapp.retrofit.Article
 import com.example.mynewsapp.retrofit.ArticlesResult
 import com.example.mynewsapp.retrofit.INewsApi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class TopNewsViewModel @Inject constructor(
     private val newsArticlesRepo: NewsArticlesRepo,
-    private val api : INewsApi
 ): ViewModel() {
 
 
@@ -37,7 +38,7 @@ class TopNewsViewModel @Inject constructor(
 
     private fun fetchArticles(){
         viewModelScope.launch {
-            newsArticlesRepo.getTopHeadlines(COUNTRY.MA)
+            newsArticlesRepo.getTopHeadlines(COUNTRY.US)
                 .flowOn(Dispatchers.IO)
                 .catch {e ->
                     Log.e("fetchArticles",

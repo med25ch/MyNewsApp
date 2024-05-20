@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 
 @Composable
-fun DetailScreen(navController: NavHostController,id : Int) {
+fun DetailScreen(navController: NavHostController,id : String) {
     Column(modifier = Modifier.fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Detail Screen with id : $id",
             fontWeight = FontWeight.SemiBold ,
