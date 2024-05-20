@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -49,7 +51,7 @@ fun TopNews(navController: NavHostController,
     Column(modifier = Modifier.fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
         //Todo 6:Add a Text with text as Top News and fontWeight od semi bold
         Text(text = "Most Read",
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.align(Alignment.Start).padding(start = 8.dp, top = 8.dp))
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -92,7 +94,9 @@ fun TopNewsItem(article: Article, onClickArticle : () -> Unit) {
                     .clip(RoundedCornerShape(8.dp))
             )
             Spacer(modifier = Modifier.height(6.dp))
-            article.title?.let { Text(text = it,color = Color.White,fontWeight = FontWeight.SemiBold) }
+            article.title?.let { Text(text = it,color = Color.White, style = MaterialTheme.typography.titleLarge) }
+            Spacer(modifier = Modifier.height(2.dp))
+            article.publishedAt?.let { Text(text = it,color = Color.White,style = MaterialTheme.typography.labelSmall) }
         }
     }
 }
