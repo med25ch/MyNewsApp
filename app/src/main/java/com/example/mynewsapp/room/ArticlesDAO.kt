@@ -25,4 +25,7 @@ interface ArticlesDAO {
 
     @Query("SELECT * from articles WHERE id = :id")
     fun getArticle(id: Int): Flow<ArticleEntity>
+
+    @Query("DELETE FROM articles")
+    fun deleteAllItems()
 }
