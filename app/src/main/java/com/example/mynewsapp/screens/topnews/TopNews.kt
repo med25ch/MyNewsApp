@@ -64,6 +64,7 @@ fun TopNews(navController: NavHostController,
                 TopNewsItem(
                     article = article,
                     onClickArticle = {
+                        topNewsViewModel.saveArticleToDb(article)
                         navController.navigate(NavigationItem.DetailScreen.route + "/${article.title}")
                     }
                 )
