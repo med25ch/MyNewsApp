@@ -8,8 +8,11 @@ import com.example.mynewsapp.repositories.NewsArticlesRepo
 import com.example.mynewsapp.retrofit.Article
 import com.example.mynewsapp.retrofit.ArticlesResult
 import com.example.mynewsapp.retrofit.INewsApi
+import com.example.mynewsapp.retrofit.toArticleEntity
+import com.example.mynewsapp.room.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -21,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TopNewsViewModel @Inject constructor(
     private val newsArticlesRepo: NewsArticlesRepo,
+    private val articlesRoomRepository : Repository
 ): ViewModel() {
 
 
@@ -39,7 +43,7 @@ class TopNewsViewModel @Inject constructor(
     private fun fetchArticles(){
         viewModelScope.launch {
             newsArticlesRepo.getTopHeadlines(COUNTRY.US)
-                .flowOn(Dispatchers.IO)
+                .flowOn(IO)
                 .catch {e ->
                     Log.e("fetchArticles",
                         "Error ${e.message} | Cause : ${e.cause}")
@@ -47,6 +51,13 @@ class TopNewsViewModel @Inject constructor(
                 .collect{
                     _articlesResults.value = it
                 }
+        }
+    }
+
+    fun saveArticleToDb(article: Article){
+        viewModelScope.launch (IO){
+            val articleEntity = article.toArticleEntity()
+            articlesRoomRepository.insert(articleEntity)
         }
     }
 

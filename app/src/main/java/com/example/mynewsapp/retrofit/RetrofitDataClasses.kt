@@ -1,5 +1,6 @@
 package com.example.mynewsapp.retrofit
 
+import com.example.mynewsapp.room.ArticleEntity
 import com.google.gson.annotations.SerializedName
 
 data class Article(
@@ -29,3 +30,15 @@ data class ArticlesResult(
     @SerializedName("articles")
     var articles: List<Article> = listOf()
 )
+
+fun Article.toArticleEntity()  : ArticleEntity {
+    return ArticleEntity(
+        author = this.author ?: "",
+        title = this.title ?: "",
+        description = this.description ?: "",
+        url = this.url ?: "",
+        urlToImage = this.urlToImage ?: "",
+        publishedAt = this.publishedAt ?: "",
+        content = this.content ?: ""
+    )
+}

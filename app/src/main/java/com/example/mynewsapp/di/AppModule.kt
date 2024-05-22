@@ -1,7 +1,13 @@
 package com.example.mynewsapp.di
 
+import android.app.Application
+import androidx.room.Room
 import com.example.mynewsapp.Constants
 import com.example.mynewsapp.retrofit.INewsApi
+import com.example.mynewsapp.room.ArticlesDAO
+import com.example.mynewsapp.room.Database
+import com.example.mynewsapp.room.Repository
+import com.example.mynewsapp.room.RoomRepositoryImpl
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -64,5 +70,28 @@ object AppModule {
     fun provideApiService(retrofit: Retrofit): INewsApi =
         retrofit.create(INewsApi::class.java)
 
+
+    @Provides
+    @Singleton
+    fun provideMyDataBase(app: Application): Database {
+        return Room.databaseBuilder(
+            app,
+            Database::class.java,
+            "MyDataBase"
+        )
+//            .addMigrations() later add migrations if u change the table
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMyRepository(database:Database) : Repository {
+        return RoomRepositoryImpl(database.articlesDAO)
+    }
+
+    @Provides
+    fun provideChannelDao(database:Database): ArticlesDAO {
+        return database.articlesDAO
+    }
 
 }

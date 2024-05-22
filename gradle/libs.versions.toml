@@ -17,7 +17,8 @@ hiltNavigationVersion = "1.0.0"
 lifecycleRuntimeComposeAndroid = "2.6.0"
 okhttpVersion = "4.12.0"
 coilVersion = "2.6.0"
-
+room_version = "2.6.1"
+kspVersion = "1.9.21-1.0.16"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,7 +46,9 @@ hiltNavigation = {group = "androidx.hilt", name = "hilt-navigation-compose" ,ver
 androidx-lifecycle-runtime-compose-android = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeComposeAndroid" }
 okhttp3 = {group = "com.squareup.okhttp3", name = "logging-interceptor" ,version.ref = "okhttpVersion"}
 coil = {group = "io.coil-kt", name = "coil-compose" ,version.ref = "coilVersion"}
-
+room = {group = "androidx.room", name = "room-runtime" ,version.ref = "room_version"}
+kaptRoom = {group = "androidx.room", name = "room-compiler" ,version.ref = "room_version"}
+roomCoroutine = {group = "androidx.room", name = "room-ktx" ,version.ref = "room_version"}
 
 
 
@@ -54,4 +57,5 @@ coil = {group = "io.coil-kt", name = "coil-compose" ,version.ref = "coilVersion"
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hiltKotlinAndroid = { id = "com.google.dagger.hilt.android",version.ref = "hiltVersion"}
+ksp = { id = "com.google.devtools.ksp",version.ref = "kspVersion"}
 

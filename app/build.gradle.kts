@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hiltKotlinAndroid)
+    alias(libs.plugins.ksp)
     kotlin("kapt")
 }
 
@@ -95,6 +96,12 @@ dependencies {
 
     //Coil
     implementation(libs.coil)
+
+    //Room DB
+    implementation(libs.room)
+    ksp(libs.kaptRoom)
+    implementation(libs.roomCoroutine)
+
 }
 
 // Allow references to generated code
