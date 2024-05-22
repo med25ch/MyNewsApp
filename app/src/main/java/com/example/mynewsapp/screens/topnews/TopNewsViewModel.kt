@@ -61,8 +61,6 @@ class TopNewsViewModel @Inject constructor(
         }
     }
 
-
-
 //    private fun fetchArticlesResults() {
 //        viewModelScope.launch (Dispatchers.IO){
 //            try {

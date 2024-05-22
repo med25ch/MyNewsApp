@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.mynewsapp.screens.categories.CategoriesScreen
 import com.example.mynewsapp.screens.detailscreen.DetailScreen
+import com.example.mynewsapp.screens.detailscreen.DetailScreenViewModel
 import com.example.mynewsapp.screens.profile.ProfileScreen
 import com.example.mynewsapp.screens.topnews.TopNews
 import com.example.mynewsapp.screens.topnews.TopNewsViewModel
@@ -26,14 +27,10 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
 
-        composable(
-            route = NavigationItem.DetailScreen.route + "/{articleId}",
-            arguments = listOf(navArgument("articleId") { type = NavType.StringType }))
+        composable(route = NavigationItem.DetailScreen.route)
         {
-                val id = it.arguments?.getString("articleId")
-            if (id != null) {
-                DetailScreen(navController,id)
-            }
+            val viewModel = hiltViewModel<DetailScreenViewModel>()
+            DetailScreen(navController, viewModel)
         }
 
         composable(BottomNavItem.Categories.route) {

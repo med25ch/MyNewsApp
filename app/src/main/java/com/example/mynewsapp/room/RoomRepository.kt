@@ -17,6 +17,8 @@ interface Repository {
     suspend fun getAllFavoriteArticles(): Flow<List<ArticleEntity>>
 
     suspend fun getArticle(id: Int): Flow<ArticleEntity>
+
+    suspend fun deleteAllArticle()
 }
 
 
@@ -52,6 +54,12 @@ class RoomRepositoryImpl @Inject constructor(
     override suspend fun getArticle(id: Int): Flow<ArticleEntity> {
         return  withContext(IO){
             articlesDAO.getArticle(id)
+        }
+    }
+
+    override suspend fun deleteAllArticle() {
+        return  withContext(IO){
+            articlesDAO.deleteAllItems()
         }
     }
 }
