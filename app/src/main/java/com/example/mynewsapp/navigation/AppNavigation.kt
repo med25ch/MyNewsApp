@@ -1,29 +1,35 @@
 package com.example.mynewsapp.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class Screen {
     DETAIL_SCREEN,
-    TOP_NEWS_SCREEN,
+    HOME_SCREEN,
+    CATEGORIES_SCREEN,
+    FAVORITES
 }
-sealed class NavigationItem(val route: String) {
-    data object TopNewsScreen : NavigationItem(Screen.TOP_NEWS_SCREEN.name)
-    data object DetailScreen : NavigationItem(Screen.DETAIL_SCREEN.name)
+sealed class LeafScreen(val route: String) {
+    data object Home : LeafScreen(Screen.HOME_SCREEN.name)
+    data object DetailScreens : LeafScreen(Screen.DETAIL_SCREEN.name)
+    data object Categories : LeafScreen(Screen.CATEGORIES_SCREEN.name)
+    data object Favorites : LeafScreen(Screen.FAVORITES.name)
 }
 
-sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
-    data object Home : BottomNavItem("home", Icons.Default.Home, "Home")
-    data object Categories : BottomNavItem("search", Icons.Default.Search, "Search")
-    data object Profile : BottomNavItem("profile", Icons.Default.Person, "Profile")
+sealed class RootScreen(val route: String, val icon: ImageVector, val label: String) {
+    data object Home : RootScreen("home_root", Icons.Default.Home, "Home")
+    data object Categories : RootScreen("categories_root", Icons.Default.Menu, "Categories")
+    data object Favorites : RootScreen("favorites_root", Icons.Default.Favorite, "Favorites")
 }
 
 
 val items = listOf(
-    BottomNavItem.Home,
-    BottomNavItem.Categories,
-    BottomNavItem.Profile
+    RootScreen.Home,
+    RootScreen.Categories,
+    RootScreen.Favorites
 )

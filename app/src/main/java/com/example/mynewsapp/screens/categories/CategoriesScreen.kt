@@ -11,11 +11,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 
 @Composable
-fun CategoriesScreen(navController: NavHostController) {
+fun CategoriesScreen() {
     Column(modifier = Modifier.fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Categories Screen",
             fontWeight = FontWeight.SemiBold ,
-            modifier = Modifier.clickable { navController.popBackStack() }
+            modifier = Modifier.clickable {  }
         )
     }
 }

@@ -8,14 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavHostController
 
 @Composable
-fun ProfileScreen(navController: NavHostController) {
+fun FavoritesScreen() {
     Column(modifier = Modifier.fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Profile Screen",
             fontWeight = FontWeight.SemiBold ,
-            modifier = Modifier.clickable { navController.popBackStack() }
+            modifier = Modifier.clickable {  }
         )
     }
 }

@@ -21,7 +21,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun DetailScreen(
-    navController: NavHostController,
+    onBack: () -> Unit,
     detailScreenViewModel: DetailScreenViewModel
 ) {
 
@@ -53,7 +53,7 @@ fun DetailScreen(
             Text(text = uiState.value.articleEntity.title,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clickable {
-                    navController.popBackStack()
+                    onBack()
                 }
             )
         }

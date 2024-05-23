@@ -5,41 +5,35 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.mynewsapp.navigation.BottomNavItem
+import com.example.mynewsapp.navigation.RootScreen
 import com.example.mynewsapp.navigation.items
 
 
 @Composable
-fun BottomNavigationBar(navController: NavController) {
+fun BottomNavigationBar(navController: NavController,currentSelectedScreen: RootScreen) {
     BottomNavigation {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-
         items.forEach { item ->
             BottomNavigationItem(
-                selected = currentRoute == item.route,
+                selected = currentSelectedScreen == item,
+                alwaysShowLabel = true,
                 onClick = {
-                    navController.navigate(item.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = true
-                    }
+                    navController.navigateToRootScreen(item)
                 },
                 icon = { Icon(item.icon, contentDescription = null) },
                 label = { Text(item.label) }
             )
+        }
+    }
+}
+
+private fun NavController.navigateToRootScreen(rootScreen: RootScreen) {
+    navigate(rootScreen.route) {
+        launchSingleTop = true
+        restoreState = true
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
         }
     }
 }
