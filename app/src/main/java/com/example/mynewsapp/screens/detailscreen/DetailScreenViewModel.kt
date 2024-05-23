@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,28 +25,28 @@ class DetailScreenViewModel @Inject constructor(
 
 
     init {
-        getArticle()
+        getArticles()
     }
 
-    private fun getArticle() {
-        viewModelScope.launch {
-            articlesRoomRepository.getAllFavoriteArticles()
-                .flowOn(IO)
-                .catch { e ->
-                    Log.e(
-                        "getArticle",
-                        "Error ${e.message} | Cause : ${e.cause}"
-                    )
-                }
-                .collect {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        articleEntity = it.last()
-                    )
-                }
-
+    private fun getArticles() = viewModelScope.launch {
+        articlesRoomRepository.getAllFavoriteArticles()
+            .flowOn(IO)
+            .catch { e ->
+                Log.e(
+                    "getArticle",
+                    "Error ${e.message} | Cause : ${e.cause}"
+                )
+            }.takeWhile {
+                it.isNotEmpty()
+            }
+            .collect {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    articleEntity = it.last()
+                )
+            }
         }
-    }
+
 
     fun deleteAllArticles(){
         viewModelScope.launch{

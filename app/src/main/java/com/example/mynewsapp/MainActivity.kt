@@ -9,18 +9,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.mynewsapp.navigation.AppNavHost
-import com.example.mynewsapp.repositories.NewsArticlesRepo
-import com.example.mynewsapp.retrofit.ApiHelper
-import com.example.mynewsapp.retrofit.INewsApi
+import com.example.mynewsapp.navigation.AppNavGraph
+import com.example.mynewsapp.navigation.RootScreen
 import com.example.mynewsapp.screens.topnews.BottomNavigationBar
 import com.example.mynewsapp.ui.theme.MyNewsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,7 +40,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NewsApp(navController = rememberNavController())
-
                 }
             }
         }
@@ -45,12 +49,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NewsApp(navController: NavHostController){
+
+    val currentSelectedScreen by navController.currentScreenAsState()
+
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(navController)
+            BottomNavigationBar(navController,currentSelectedScreen = currentSelectedScreen)
         }
     ) { innerPadding ->
-        AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
+        AppNavGraph(navController = navController, modifier = Modifier.padding(innerPadding))
     }
 }
 
@@ -61,4 +68,31 @@ fun NewsApp(navController: NavHostController){
 fun GreetingPreview() {
     MyNewsAppTheme {
     }
+}
+
+@Stable
+@Composable
+private fun NavController.currentScreenAsState(): State<RootScreen> {
+    val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Home) }
+    DisposableEffect(key1 = this) {
+        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
+            when {
+                destination.hierarchy.any { it.route == RootScreen.Home.route } -> {
+                    selectedItem.value = RootScreen.Home
+                }
+                destination.hierarchy.any { it.route == RootScreen.Categories.route } -> {
+                    selectedItem.value = RootScreen.Categories
+                }
+                destination.hierarchy.any { it.route == RootScreen.Favorites.route } -> {
+                    selectedItem.value = RootScreen.Favorites
+                }
+            }
+
+        }
+        addOnDestinationChangedListener(listener)
+        onDispose {
+            removeOnDestinationChangedListener(listener)
+        }
+    }
+    return selectedItem
 }
