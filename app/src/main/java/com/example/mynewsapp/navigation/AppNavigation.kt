@@ -23,7 +23,7 @@ sealed class LeafScreen(val route: String) {
 
 sealed class RootScreen(val route: String, val icon: ImageVector, val label: String) {
     data object Home : RootScreen("home_root", Icons.Default.Home, "Home")
-    data object Categories : RootScreen("categories_root", Icons.Default.Menu, "Categories")
+    data object Categories : RootScreen("categories_root", Icons.Default.Search, "Discover")
     data object Favorites : RootScreen("favorites_root", Icons.Default.Favorite, "Favorites")
 }
 

@@ -26,13 +26,12 @@ class NewsArticlesRepo @Inject constructor(
 }
 
 enum class CATEGORY {
-    BUSINESS,
-    ENTERTAINMENT,
-    GENERAL,
-    HEALTH,
-    SCIENCE,
-    SPORTS,
-    TECHNOLOGY
+    Business,
+    Entertainment,
+    Health,
+    Science,
+    Sports,
+    Technology
 }
 
 enum class COUNTRY {
