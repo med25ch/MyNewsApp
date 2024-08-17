@@ -3,10 +3,13 @@ package com.example.mynewsapp.screens.topnews
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +32,7 @@ import com.example.mynewsapp.retrofit.Article
 
 @Composable
 fun TopNews(showDetail: () -> Unit,
+            modifier: Modifier = Modifier,
             topNewsViewModel: TopNewsViewModel) {
 
     // read this article : https://medium.com/androiddevelopers/consuming-flows-safely-in-jetpack-compose-cde014d0d5a3
@@ -37,23 +40,26 @@ fun TopNews(showDetail: () -> Unit,
     val articlesResults = topNewsViewModel.articlesResults.collectAsStateWithLifecycle()
 
     //Todo 5: add a Column with a fillMaxSize and set horizontalAlignment to center
-    Column(modifier = Modifier.fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier
+        .padding(start = 4.dp, end = 4.dp, bottom = 4.dp)
+        .fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
         //Todo 6:Add a Text with text as Top News and fontWeight od semi bold
         Text(text = "Most Read",
             style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier
+            modifier = modifier
                 .align(Alignment.Start)
                 .padding(start = 8.dp, top = 8.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = modifier.height(16.dp))
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ){
-            items(articlesResults.value.articles.filter { it.urlToImage != null }){ article->
+            items(articlesResults.value.articles){ article->
                 //Todo 7: Use TopNewsItem as the UI and pass in the result from the items
-                TopNewsItem(
+                TopNewsSmallItem(
                     article = article,
+                    modifier = modifier,
                     onClickArticle = {
                         topNewsViewModel.saveArticleToDb(article)
                         showDetail()
@@ -86,18 +92,56 @@ fun TopNewsItem(article: Article, onClickArticle : () -> Unit) {
                     .clip(RoundedCornerShape(8.dp))
             )
             Spacer(modifier = Modifier.height(6.dp))
-            article.title?.let { Text(text = it,color = Color.White, style = MaterialTheme.typography.titleLarge) }
+            article.title?.let { Text(text = it, style = MaterialTheme.typography.titleLarge) }
             Spacer(modifier = Modifier.height(4.dp))
-            article.publishedAt?.let { Text(text = it,color = Color.White,style = MaterialTheme.typography.headlineMedium, fontSize = 12.sp) }
+            article.publishedAt?.let { Text(text = it,style = MaterialTheme.typography.headlineMedium, fontSize = 12.sp) }
         }
     }
 }
 
+
+@Composable
+fun TopNewsSmallItem(article: Article,
+                     modifier: Modifier = Modifier,
+                     onClickArticle : () -> Unit) {
+    Card(modifier = Modifier
+        .clip(RoundedCornerShape(8.dp))
+        .clickable {
+            onClickArticle()
+        }) {
+
+        //Image(painter = painterResource(id = MockData.topNewsList[0].image), contentDescription ="",contentScale = ContentScale.FillBounds)
+        Row (modifier.fillMaxWidth().padding(12.dp)){
+
+            AsyncImage(
+                model = article.urlToImage,
+                contentDescription = "",
+                placeholder = painterResource(R.drawable.breaking_news),
+                error = painterResource(R.drawable.breaking_news),
+                contentScale = ContentScale.Fit,
+                modifier = modifier
+                    .size(74.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
+            Spacer(modifier = modifier.size(8.dp))
+
+            Column (modifier = modifier.fillMaxWidth()){
+                Spacer(modifier = modifier.size(8.dp))
+                article.title?.let { Text(text = it, style = MaterialTheme.typography.titleLarge) }
+                Spacer(modifier = modifier.height(4.dp))
+                article.publishedAt?.let { Text(text = it,style = MaterialTheme.typography.headlineMedium, fontSize = 12.sp) }
+            }
+
+        }
+    }
+}
+
+
 @Preview
 @Composable
 fun Preview_TopNewsItem(){
-    val article = Article(null, null, "bla bla bla bla", "hadi trumps bla bla", "", "", "March 5,01:01", "")
-    TopNewsItem(
+    val article = Article(null, null, "bla bla bla bla dede", "hadi trumps bla bla", "", "", "March 5,01:01", "")
+    TopNewsSmallItem(
         article = article,
         onClickArticle = {}
     )

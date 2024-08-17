@@ -102,6 +102,10 @@ dependencies {
     ksp(libs.kaptRoom)
     implementation(libs.roomCoroutine)
 
+    // Material icons new
+    implementation(libs.icons)
+
+
 }
 
 // Allow references to generated code

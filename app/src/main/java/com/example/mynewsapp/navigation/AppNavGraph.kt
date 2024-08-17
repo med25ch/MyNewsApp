@@ -9,9 +9,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.mynewsapp.screens.categories.CategoriesScreen
+import com.example.mynewsapp.screens.discoverScreen.DiscoverCategoriesScreen
 import com.example.mynewsapp.screens.detailscreen.DetailScreen
 import com.example.mynewsapp.screens.detailscreen.DetailScreenViewModel
+import com.example.mynewsapp.screens.discoverScreen.DiscoverScreenViewModel
 import com.example.mynewsapp.screens.profile.FavoritesScreen
 import com.example.mynewsapp.screens.topnews.TopNews
 import com.example.mynewsapp.screens.topnews.TopNewsViewModel
@@ -89,7 +90,11 @@ private fun NavGraphBuilder.addCategoriesRoute(navController: NavController) {
 }
 private fun NavGraphBuilder.showCategories(navController: NavController) {
     composable(route = LeafScreen.Categories.route) {
-        CategoriesScreen()
+        val viewModel = hiltViewModel<DiscoverScreenViewModel>()
+        DiscoverCategoriesScreen(
+            showDetail = {},
+            discoverScreenViewModel = viewModel
+        )
     }
 }
 //end of search navigation
@@ -110,3 +115,8 @@ private fun NavGraphBuilder.showFavorites(navController: NavController) {
     }
 }
 //end of favorites navigation
+
+
+// inspiration :
+
+//https://dribbble.com/shots/15193792-News-iOS-mobile-app
