@@ -1,5 +1,6 @@
 package com.example.mynewsapp.repositories
 
+import android.util.Log
 import com.example.mynewsapp.retrofit.ApiHelper
 import com.example.mynewsapp.retrofit.ArticlesResult
 import com.example.mynewsapp.retrofit.INewsApi
@@ -12,15 +13,24 @@ class NewsArticlesRepo @Inject constructor(
 ) : ApiHelper{
 
     private val KEY = "4247013acfde47c0bacb38754bdfdebd"
+
     override fun getTopHeadlines(country: COUNTRY) = flow {
-        emit(newsApi.getTopHeadlines(country.name.lowercase(), KEY))
+        try {
+            emit(newsApi.getTopHeadlines(country.name.lowercase(), KEY))
+        }catch (e : Exception) {
+            Log.e("NewsArticlesRepo - getTopHeadlines","${e.cause}  | ${e.message}")
+        }
     }
 
     override fun getTopHeadlinesByCategory(
         country: COUNTRY,
         category: CATEGORY
     ): Flow<ArticlesResult> = flow {
-        emit(newsApi.getTopHeadlinesByCategory(country.name.lowercase(), KEY, category.name.lowercase()))
+        try {
+            emit(newsApi.getTopHeadlinesByCategory(country.name.lowercase(), KEY, category.name.lowercase()))
+        }catch (e : Exception) {
+            Log.e("NewsArticlesRepo - getTopHeadlinesByCategory","${e.cause}  | ${e.message}")
+        }
     }
 
 }
