@@ -13,6 +13,7 @@ import com.example.mynewsapp.room.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -20,14 +21,16 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 
 class TopNewsViewModel @Inject constructor(
     private val newsArticlesRepo: NewsArticlesRepo,
-    private val articlesRoomRepository : Repository
-): ViewModel() {
+    private val articlesRoomRepository: Repository
+) : ViewModel() {
 
+    private var searchJob: Job? = null
 
     private val _articlesResults = MutableStateFlow(ArticlesResult())
     val articlesResults: StateFlow<ArticlesResult>
@@ -41,22 +44,35 @@ class TopNewsViewModel @Inject constructor(
         fetchArticles()
     }
 
-    private fun fetchArticles(){
-        viewModelScope.launch {
-            newsArticlesRepo.getTopHeadlines(COUNTRY.US)
-                .flowOn(IO)
-                .catch {e ->
-                    Log.e("fetchArticles",
-                        "Error ${e.message} | Cause : ${e.cause}")
-                }
-                .collect{
-                    _articlesResults.value = it
-                }
+    private fun fetchArticles() {
+
+        searchJob?.cancel()
+
+        searchJob = viewModelScope.launch {
+
+            try {
+                Log.i("TopNewsViewModel", "fetchArticles")
+
+                newsArticlesRepo.getTopHeadlines(COUNTRY.US)
+                    .flowOn(Dispatchers.IO)
+                    .catch { e ->
+                        Log.e(
+                            "fetchArticles",
+                            "Error ${e.message} | Cause : ${e.cause}"
+                        )
+                    }
+                    .collect {
+                        _articlesResults.value = it
+                    }
+
+            } catch (e: CancellationException) {
+                Log.i("TopNewsViewModel", "previous job canceled for fetchArticles")
+            }
         }
     }
 
-    fun saveArticleToDb(article: Article){
-        viewModelScope.launch (IO){
+    fun saveArticleToDb(article: Article) {
+        viewModelScope.launch(IO) {
             val articleEntity = article.toArticleEntity()
             articlesRoomRepository.insert(articleEntity)
         }
@@ -74,6 +90,6 @@ class TopNewsViewModel @Inject constructor(
 //                _isLoading.value = false
 //            }
 //        }
-  //  }
+    //  }
 
 }
