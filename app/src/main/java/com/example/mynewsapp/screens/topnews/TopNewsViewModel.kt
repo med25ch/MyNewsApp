@@ -7,18 +7,17 @@ import com.example.mynewsapp.repositories.COUNTRY
 import com.example.mynewsapp.repositories.NewsArticlesRepo
 import com.example.mynewsapp.retrofit.Article
 import com.example.mynewsapp.retrofit.ArticlesResult
-import com.example.mynewsapp.retrofit.INewsApi
 import com.example.mynewsapp.retrofit.toArticleEntity
 import com.example.mynewsapp.room.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
@@ -32,13 +31,10 @@ class TopNewsViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    private val _articlesResults = MutableStateFlow(ArticlesResult())
-    val articlesResults: StateFlow<ArticlesResult>
-        get() = _articlesResults
+    val articlesResults: StateFlow<NewsUiState>
+        get() = _newsUiState
 
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean>
-        get() = _isLoading
+    private val _newsUiState = MutableStateFlow(NewsUiState())
 
     init {
         fetchArticles()
@@ -50,11 +46,13 @@ class TopNewsViewModel @Inject constructor(
 
         searchJob = viewModelScope.launch {
 
+            _newsUiState.value = _newsUiState.value.copy(isLoading = true)
+
             try {
                 Log.i("TopNewsViewModel", "fetchArticles")
 
                 newsArticlesRepo.getTopHeadlines(COUNTRY.US)
-                    .flowOn(Dispatchers.IO)
+                    .flowOn(IO)
                     .catch { e ->
                         Log.e(
                             "fetchArticles",
@@ -62,11 +60,12 @@ class TopNewsViewModel @Inject constructor(
                         )
                     }
                     .collect {
-                        _articlesResults.value = it
+                        _newsUiState.value.articlesResult = it
                     }
-
             } catch (e: CancellationException) {
                 Log.i("TopNewsViewModel", "previous job canceled for fetchArticles")
+            } finally {
+                _newsUiState.value = _newsUiState.value.copy(isLoading = false)
             }
         }
     }
@@ -93,3 +92,7 @@ class TopNewsViewModel @Inject constructor(
     //  }
 
 }
+
+data class NewsUiState(
+    var articlesResult: ArticlesResult ?= null,
+    var isLoading : Boolean = false)

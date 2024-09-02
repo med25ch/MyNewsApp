@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.mynewsapp.R
 import com.example.mynewsapp.retrofit.Article
+import com.example.mynewsapp.sharedui.IndeterminateCircularIndicator
 
 @Composable
 fun TopNews(showDetail: () -> Unit,
@@ -52,52 +53,58 @@ fun TopNews(showDetail: () -> Unit,
 
         Spacer(modifier = modifier.height(16.dp))
 
+        if (articlesResults.value.isLoading){
+            IndeterminateCircularIndicator(showLoading = true)
+        }
+
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ){
-            items(articlesResults.value.articles){ article->
-                //Todo 7: Use TopNewsItem as the UI and pass in the result from the items
-                TopNewsSmallItem(
-                    article = article,
-                    modifier = modifier,
-                    onClickArticle = {
-                        topNewsViewModel.saveArticleToDb(article)
-                        showDetail()
-                    }
-                )
+            articlesResults.value.articlesResult?.let {
+                items(it.articles){ article->
+                    //Todo 7: Use TopNewsItem as the UI and pass in the result from the items
+                    TopNewsSmallItem(
+                        article = article,
+                        modifier = modifier,
+                        onClickArticle = {
+                            topNewsViewModel.saveArticleToDb(article)
+                            showDetail()
+                        }
+                    )
+                }
             }
         }
     }
 }
 
 
-@Composable
-fun TopNewsItem(article: Article, onClickArticle : () -> Unit) {
-    Card(modifier = Modifier
-        .clip(RoundedCornerShape(8.dp))
-        .clickable {
-            onClickArticle()
-        }) {
-
-        //Image(painter = painterResource(id = MockData.topNewsList[0].image), contentDescription ="",contentScale = ContentScale.FillBounds)
-        Column (Modifier.padding(12.dp)){
-
-            AsyncImage(
-                model = article.urlToImage,
-                contentDescription = "",
-                placeholder = painterResource(R.drawable.breaking_news),
-                error = painterResource(R.drawable.breaking_news),
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            article.title?.let { Text(text = it, style = MaterialTheme.typography.titleLarge) }
-            Spacer(modifier = Modifier.height(4.dp))
-            article.publishedAt?.let { Text(text = it,style = MaterialTheme.typography.headlineMedium, fontSize = 12.sp) }
-        }
-    }
-}
+//@Composable
+//fun TopNewsItem(article: Article, onClickArticle : () -> Unit) {
+//    Card(modifier = Modifier
+//        .clip(RoundedCornerShape(8.dp))
+//        .clickable {
+//            onClickArticle()
+//        }) {
+//
+//        //Image(painter = painterResource(id = MockData.topNewsList[0].image), contentDescription ="",contentScale = ContentScale.FillBounds)
+//        Column (Modifier.padding(12.dp)){
+//
+//            AsyncImage(
+//                model = article.urlToImage,
+//                contentDescription = "",
+//                placeholder = painterResource(R.drawable.breaking_news),
+//                error = painterResource(R.drawable.breaking_news),
+//                contentScale = ContentScale.Fit,
+//                modifier = Modifier
+//                    .clip(RoundedCornerShape(8.dp))
+//            )
+//            Spacer(modifier = Modifier.height(6.dp))
+//            article.title?.let { Text(text = it, style = MaterialTheme.typography.titleLarge) }
+//            Spacer(modifier = Modifier.height(4.dp))
+//            article.publishedAt?.let { Text(text = it,style = MaterialTheme.typography.headlineMedium, fontSize = 12.sp) }
+//        }
+//    }
+//}
 
 
 @Composable
