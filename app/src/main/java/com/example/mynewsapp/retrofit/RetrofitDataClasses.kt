@@ -2,6 +2,7 @@ package com.example.mynewsapp.retrofit
 
 import com.example.mynewsapp.room.ArticleEntity
 import com.google.gson.annotations.SerializedName
+import retrofit2.Response
 
 data class Article(
     @SerializedName("source")
@@ -24,11 +25,20 @@ data class Source(
 
 data class ArticlesResult(
     @SerializedName("status")
-    var status: String? = null,
+    var status: String ?= null,
     @SerializedName("totalResults")
     var totalResults: Int? = null,
     @SerializedName("articles")
     var articles: List<Article> = listOf()
+)
+
+data class Status(
+    @SerializedName("status")
+    var status: String? = null,
+    @SerializedName("code")
+    var code: String? = null,
+    @SerializedName("message")
+    var message: String? = null
 )
 
 fun Article.toArticleEntity()  : ArticleEntity {

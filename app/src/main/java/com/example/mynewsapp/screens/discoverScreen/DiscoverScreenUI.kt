@@ -43,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mynewsapp.repositories.CATEGORY
 import com.example.mynewsapp.screens.discoverScreen.Items.tabItem
 import com.example.mynewsapp.screens.topnews.TopNewsSmallItem
+import com.example.mynewsapp.sharedui.IndeterminateCircularIndicator
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -163,13 +164,14 @@ fun NewsCategoriesTabRow(
         }
 
         // Check if we are cancel coroutines when we switch from tab to tab
-        val articlesResults = discoverScreenViewModel.articlesResults.collectAsStateWithLifecycle()
+        val articlesUiState = discoverScreenViewModel.articlesResults.collectAsStateWithLifecycle()
 
         HorizontalPager(
             state = pagerState, modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
         ) { index ->
+
             Box(modifier = Modifier.fillMaxSize()) {
 
                 Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp, bottom = 4.dp).fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally) {
@@ -185,21 +187,31 @@ fun NewsCategoriesTabRow(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ){
-                        items(articlesResults.value.articles){ article->
-                            //Todo 7: Use TopNewsItem as the UI and pass in the result from the items
-                            TopNewsSmallItem(
-                                article = article,
-                                modifier = modifier,
-                                onClickArticle = {
-//                                topNewsViewModel.saveArticleToDb(article)
-//                                showDetail()
+
+                    if (articlesUiState.value.isLoading){
+
+                        IndeterminateCircularIndicator(showLoading = true)
+
+                    }else {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ){
+                            articlesUiState.value.articlesResult?.let {
+                                items(it.articles){ article->
+                                    //Todo 7: Use TopNewsItem as the UI and pass in the result from the items
+                                    TopNewsSmallItem(
+                                        article = article,
+                                        modifier = modifier,
+                                        onClickArticle = {
+                                            //topNewsViewModel.saveArticleToDb(article)
+                                            //showDetail()
+                                        }
+                                    )
                                 }
-                            )
+                            }
                         }
                     }
+
                 }
             }
         }

@@ -10,6 +10,7 @@ import com.example.mynewsapp.retrofit.Article
 import com.example.mynewsapp.retrofit.ArticlesResult
 import com.example.mynewsapp.retrofit.toArticleEntity
 import com.example.mynewsapp.room.Repository
+import com.example.mynewsapp.screens.topnews.NewsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -32,13 +33,11 @@ class DiscoverScreenViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    private val _articlesResults = MutableStateFlow(ArticlesResult())
-    val articlesResults: StateFlow<ArticlesResult>
-        get() = _articlesResults
+    private val _newsUiState = MutableStateFlow(NewsUiState())
 
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean>
-        get() = _isLoading
+    val articlesResults: StateFlow<NewsUiState>
+        get() = _newsUiState
+
 
     init {
         fetchArticlesByCategory(category = CATEGORY.Business)
@@ -47,6 +46,8 @@ class DiscoverScreenViewModel @Inject constructor(
     fun fetchArticlesByCategory(country: COUNTRY = COUNTRY.US, category: CATEGORY) {
 
         searchJob?.cancel()
+
+        _newsUiState.value = _newsUiState.value.copy(isLoading = true)
 
         searchJob = viewModelScope.launch {
 
@@ -62,10 +63,15 @@ class DiscoverScreenViewModel @Inject constructor(
                         )
                     }
                     .collect {
-                        _articlesResults.value = it
+                        _newsUiState.value.articlesResult = it
                     }
-            } catch (e: CancellationException) {
+
+            }
+            catch (e: CancellationException) {
                 Log.i("DiscoverScreenViewModel", "previous job canceled for $category")
+            }
+            finally {
+                _newsUiState.value = _newsUiState.value.copy(isLoading = false)
             }
         }
     }
