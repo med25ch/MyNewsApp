@@ -28,4 +28,13 @@ interface ArticlesDAO {
 
     @Query("DELETE FROM articles")
     fun deleteAllItems()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTemporaryArticle(temporaryArticleEntity: TemporaryArticleEntity)
+
+    @Query("SELECT * FROM temporary_articles LIMIT 1")
+    fun getTemporaryArticle(): Flow<TemporaryArticleEntity>
+
+    @Query("DELETE FROM temporary_articles")
+    suspend fun deleteAllTemporaryItems()
 }

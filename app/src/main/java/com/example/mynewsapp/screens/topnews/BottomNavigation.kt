@@ -4,6 +4,7 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -13,7 +14,10 @@ import com.example.mynewsapp.navigation.items
 
 @Composable
 fun BottomNavigationBar(navController: NavController,currentSelectedScreen: RootScreen) {
-    BottomNavigation {
+    BottomNavigation (
+        backgroundColor = MaterialTheme.colorScheme.primary,
+        contentColor =  MaterialTheme.colorScheme.onPrimary
+    ){
         items.forEach { item ->
             BottomNavigationItem(
                 selected = currentSelectedScreen == item,

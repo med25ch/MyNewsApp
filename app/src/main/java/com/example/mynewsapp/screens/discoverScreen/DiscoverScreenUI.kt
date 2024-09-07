@@ -25,6 +25,7 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -89,12 +91,14 @@ fun SearchBarUI(modifier: Modifier = Modifier){
                         text = "Search",
                         fontWeight = FontWeight.Light,
                         fontSize = 15.sp,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 },
             )
@@ -102,7 +106,7 @@ fun SearchBarUI(modifier: Modifier = Modifier){
         expanded = false,
         onExpandedChange = onActiveChange,
         shape = RoundedCornerShape(8.dp),
-        content = {}
+        content = {},
     )
 }
 
@@ -115,7 +119,6 @@ fun SearchBarPreview(){
 
 // Function to handle Object.
 @ExperimentalFoundationApi
-@Preview
 @Composable
 fun NewsCategoriesTabRow(
     modifier: Modifier = Modifier,
@@ -155,7 +158,8 @@ fun NewsCategoriesTabRow(
                             imageVector = if (index == selectedTabIndex) {
                                 tabItem.selectedIcon
                             } else tabItem.unSelectedItem,
-                            contentDescription = tabItem.title
+                            contentDescription = tabItem.title,
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
 
@@ -179,8 +183,8 @@ fun NewsCategoriesTabRow(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     //Todo 6:Add a Text with text as Top News and fontWeight od semi bold
-                    Text(text = tabItem[index].title,
-                        style = MaterialTheme.typography.headlineLarge,
+                    Text(text = tabItem[index].title + " News",
+                        style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier
                             .align(Alignment.Start)
                             .padding(start = 8.dp, top = 8.dp))

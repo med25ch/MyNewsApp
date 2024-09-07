@@ -1,6 +1,7 @@
 package com.example.mynewsapp.retrofit
 
 import com.example.mynewsapp.room.ArticleEntity
+import com.example.mynewsapp.room.TemporaryArticleEntity
 import com.google.gson.annotations.SerializedName
 import retrofit2.Response
 
@@ -43,6 +44,18 @@ data class Status(
 
 fun Article.toArticleEntity()  : ArticleEntity {
     return ArticleEntity(
+        author = this.author ?: "",
+        title = this.title ?: "",
+        description = this.description ?: "",
+        url = this.url ?: "",
+        urlToImage = this.urlToImage ?: "",
+        publishedAt = this.publishedAt ?: "",
+        content = this.content ?: ""
+    )
+}
+
+fun Article.toTemporaryArticleEntity()  : TemporaryArticleEntity {
+    return TemporaryArticleEntity(
         author = this.author ?: "",
         title = this.title ?: "",
         description = this.description ?: "",
