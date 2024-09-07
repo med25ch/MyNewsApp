@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,9 +43,9 @@ fun DetailScreen(
     val uiState = detailScreenViewModel.uiState.collectAsStateWithLifecycle()
 
 
-    DisposableEffect(LocalLifecycleOwner.current) {
+    DisposableEffect(androidx.lifecycle.compose.LocalLifecycleOwner.current) {
         onDispose {
-            detailScreenViewModel.deleteAllArticles()
+            //detailScreenViewModel.deleteTemporaryArticle()
         }
     }
 
@@ -62,15 +61,13 @@ fun DetailScreen(
     } else {
 
     ArticleDetails(
-        articleTitle = uiState.value.articleEntity.title,
-        articleUrlImage = uiState.value.articleEntity.urlToImage,
-        articleBody = uiState.value.articleEntity.content,
+        articleTitle = uiState.value.temporaryArticleEntity.title,
+        articleUrlImage = uiState.value.temporaryArticleEntity.urlToImage,
+        articleBody = uiState.value.temporaryArticleEntity.content,
         onShare = { },
         onBack = onBack)
 
     }
-
-
 }
 
 

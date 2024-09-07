@@ -7,17 +7,15 @@ import com.example.mynewsapp.repositories.COUNTRY
 import com.example.mynewsapp.repositories.NewsArticlesRepo
 import com.example.mynewsapp.retrofit.Article
 import com.example.mynewsapp.retrofit.ArticlesResult
-import com.example.mynewsapp.retrofit.toArticleEntity
+import com.example.mynewsapp.retrofit.toTemporaryArticleEntity
 import com.example.mynewsapp.room.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
@@ -72,8 +70,14 @@ class TopNewsViewModel @Inject constructor(
 
     fun saveArticleToDb(article: Article) {
         viewModelScope.launch(IO) {
-            val articleEntity = article.toArticleEntity()
-            articlesRoomRepository.insert(articleEntity)
+            try{
+                val temporaryArticleEntity = article.toTemporaryArticleEntity()
+                articlesRoomRepository.deleteAllTemporaryArticle()
+                articlesRoomRepository.insertTemporaryArticle(temporaryArticleEntity)
+            }catch (e : Exception){
+                Log.e("saveArticleToDb", "Error fetching articles: ${e.message}")
+            }
+
         }
     }
 

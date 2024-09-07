@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,7 +50,8 @@ fun TopNews(showDetail: () -> Unit,
             style = MaterialTheme.typography.headlineLarge,
             modifier = modifier
                 .align(Alignment.Start)
-                .padding(start = 8.dp, top = 8.dp))
+                .padding(start = 8.dp, top = 8.dp),
+            color = MaterialTheme.colorScheme.primary)
 
         Spacer(modifier = modifier.height(16.dp))
 
@@ -115,7 +117,15 @@ fun TopNewsSmallItem(article: Article,
         .clip(RoundedCornerShape(8.dp))
         .clickable {
             onClickArticle()
-        }) {
+        },
+        colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            disabledContentColor = MaterialTheme.colorScheme.primary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary
+
+        )
+        ) {
 
         //Image(painter = painterResource(id = MockData.topNewsList[0].image), contentDescription ="",contentScale = ContentScale.FillBounds)
         Row (modifier.fillMaxWidth().padding(12.dp)){

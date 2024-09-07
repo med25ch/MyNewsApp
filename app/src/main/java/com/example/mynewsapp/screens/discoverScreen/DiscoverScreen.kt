@@ -35,14 +35,16 @@ fun DiscoverCategoriesScreen(
         Text(text = "Discover",
             fontWeight = FontWeight.ExtraBold ,
             fontSize = 25.sp,
-            modifier = Modifier.clickable {  }
+            modifier = Modifier.clickable {  },
+            color = MaterialTheme.colorScheme.primary
         )
 
 
         Text(text = "News from all over the world",
             fontWeight = FontWeight.Normal ,
             fontSize = 15.sp,
-            modifier = Modifier.clickable {  }
+            modifier = Modifier.clickable {  },
+            color = MaterialTheme.colorScheme.primary
         )
 
         SearchBarUI(modifier)

@@ -1,9 +1,11 @@
 package com.example.mynewsapp.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BookmarkAdded
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,9 +24,9 @@ sealed class LeafScreen(val route: String) {
 }
 
 sealed class RootScreen(val route: String, val icon: ImageVector, val label: String) {
-    data object Home : RootScreen("home_root", Icons.Default.Home, "Home")
+    data object Home : RootScreen("home_root", Icons.Default.Newspaper, "Home")
     data object Categories : RootScreen("categories_root", Icons.Default.Search, "Discover")
-    data object Favorites : RootScreen("favorites_root", Icons.Default.Favorite, "Favorites")
+    data object Favorites : RootScreen("favorites_root", Icons.Default.BookmarkAdded, "Favorites")
 }
 
 

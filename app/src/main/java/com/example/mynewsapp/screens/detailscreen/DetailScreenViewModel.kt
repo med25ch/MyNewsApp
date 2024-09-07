@@ -3,15 +3,15 @@ package com.example.mynewsapp.screens.detailscreen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mynewsapp.room.ArticleEntity
 import com.example.mynewsapp.room.Repository
+import com.example.mynewsapp.room.TemporaryArticleEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,32 +25,44 @@ class DetailScreenViewModel @Inject constructor(
 
 
     init {
-        getArticles()
+        getTemporaryArticle()
     }
 
-    private fun getArticles() = viewModelScope.launch {
-        articlesRoomRepository.getAllFavoriteArticles()
+    private fun getTemporaryArticle() = viewModelScope.launch {
+        articlesRoomRepository.getTemporaryArticle()
             .flowOn(IO)
             .catch { e ->
                 Log.e(
-                    "getArticle",
+                    "getTemporaryArticle",
                     "Error ${e.message} | Cause : ${e.cause}"
                 )
-            }.takeWhile {
-                it.isNotEmpty()
             }
             .collect {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    articleEntity = it.last()
-                )
-            }
+                try {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        temporaryArticleEntity = it
+                    )
+                }
+                catch (e :Exception){
+                    Log.e(
+                        "getTemporaryArticle",
+                        "Error ${e.message} | Cause : ${e.cause}"
+                    )
+
+                    //Default value in case db return null object.
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        temporaryArticleEntity = TemporaryArticleEntity()
+                    )
+                }
         }
+    }
 
 
-    fun deleteAllArticles(){
+    fun deleteTemporaryArticle(){
         viewModelScope.launch{
-            articlesRoomRepository.deleteAllArticle()
+            articlesRoomRepository.deleteAllTemporaryArticle()
         }
     }
 
@@ -58,5 +70,5 @@ class DetailScreenViewModel @Inject constructor(
 
 data class DetailScreenUiState(
     val isLoading : Boolean = true,
-    val articleEntity: ArticleEntity = ArticleEntity(),
+    val temporaryArticleEntity: TemporaryArticleEntity = TemporaryArticleEntity(),
 )
