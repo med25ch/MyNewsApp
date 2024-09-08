@@ -1,5 +1,6 @@
 package com.example.mynewsapp.screens.favorites
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,7 +28,7 @@ fun FavoritesScreen(
     modifier: Modifier = Modifier,
     favoritesScreenViewModel: FavoritesScreenViewModel
 ) {
-
+    val context = LocalContext.current
     // Check if we are cancel coroutines when we switch from tab to tab
     val favoritesArticlesUiState = favoritesScreenViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -41,13 +43,12 @@ fun FavoritesScreen(
             color = MaterialTheme.colorScheme.primary
         )
 
-        Text(text = "Re read your articles anytime !",
+        Text(text = "Reread your articles anytime !",
             fontWeight = FontWeight.Normal ,
             fontSize = 15.sp,
             modifier = Modifier.clickable {  },
             color = MaterialTheme.colorScheme.primary
         )
-
 
         Spacer(modifier = Modifier.size(15.dp))
 
@@ -58,6 +59,7 @@ fun FavoritesScreen(
             IndeterminateCircularIndicator(showLoading = true)
 
         }else {
+
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ){
@@ -66,15 +68,18 @@ fun FavoritesScreen(
                     TopNewsSmallItem(
                         article = article,
                         modifier = modifier,
-                        onLongClickArticle = { favoritesScreenViewModel.deleteFavoriteArticle(article) },
+                        onLongClickArticle = {
+                            favoritesScreenViewModel.deleteFavoriteArticle(article)
+                            Toast.makeText(context,"Article deleted from favorite articles", Toast.LENGTH_SHORT).show()
+                                             },
                         onClickArticle = {
                             //topNewsViewModel.saveArticleToDb(article)
                             //showDetail()
-                        }
+                        },
+                        showDeleteIcon = true
                     )
                 }
             }
         }
-
-}
+    }
 }
