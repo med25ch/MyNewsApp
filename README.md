@@ -34,3 +34,5 @@ Dependency Injection
 - Hilt: For managing dependency injection efficiently across the app.
 
 ## Screenshots
+
+<img src="https://github.com/med25ch/MyNewsApp/blob/main/screenshots/Discover.png" width="30%"></img> <img src="https://github.com/med25ch/MyNewsApp/blob/main/screenshots/MostRead.png" width="30%"></img> <img src="https://github.com/med25ch/MyNewsApp/blob/main/screenshots/Favorites.png" width="30%"></img> <img src="https://github.com/med25ch/MyNewsApp/blob/main/screenshots/Details.png" width="30%"></img> <img src="https://github.com/med25ch/MyNewsApp/blob/main/screenshots/Discorver_Dark.png" width="30%"></img> <img src="https://github.com/med25ch/MyNewsApp/blob/main/screenshots/Details_Dark.png" width="30%"></img> 
