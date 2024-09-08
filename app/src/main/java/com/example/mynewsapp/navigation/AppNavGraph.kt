@@ -13,7 +13,8 @@ import com.example.mynewsapp.screens.discoverScreen.DiscoverCategoriesScreen
 import com.example.mynewsapp.screens.detailscreen.DetailScreen
 import com.example.mynewsapp.screens.detailscreen.DetailScreenViewModel
 import com.example.mynewsapp.screens.discoverScreen.DiscoverScreenViewModel
-import com.example.mynewsapp.screens.profile.FavoritesScreen
+import com.example.mynewsapp.screens.favorites.FavoritesScreen
+import com.example.mynewsapp.screens.favorites.FavoritesScreenViewModel
 import com.example.mynewsapp.screens.topnews.TopNews
 import com.example.mynewsapp.screens.topnews.TopNewsViewModel
 
@@ -29,9 +30,9 @@ fun AppNavGraph(
         startDestination = startDestination
     ) {
 
-        composable(RootScreen.Favorites.route) {
-            FavoritesScreen()
-        }
+//        composable(RootScreen.Favorites.route) {
+//            FavoritesScreen()
+//        }
 
         //Nested Navigation implementation
         addHomeRoute(navController)
@@ -111,7 +112,8 @@ private fun NavGraphBuilder.addFavoritesRoute(navController: NavController) {
 }
 private fun NavGraphBuilder.showFavorites(navController: NavController) {
     composable(route = LeafScreen.Favorites.route) {
-        FavoritesScreen()
+        val viewModel = hiltViewModel<FavoritesScreenViewModel>()
+        FavoritesScreen(favoritesScreenViewModel = viewModel)
     }
 }
 //end of favorites navigation

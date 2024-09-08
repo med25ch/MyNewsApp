@@ -1,6 +1,7 @@
 package com.example.mynewsapp.screens.topnews
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -68,8 +69,9 @@ fun TopNews(showDetail: () -> Unit,
                     TopNewsSmallItem(
                         article = article,
                         modifier = modifier,
-                        onClickArticle = {
-                            topNewsViewModel.saveArticleToDb(article)
+                        onLongClickArticle = {topNewsViewModel.saveArticleToDb(article)}
+                        ,onClickArticle = {
+                            topNewsViewModel.saveTemporaryArticleToDb(article)
                             showDetail()
                         }
                     )
@@ -109,15 +111,20 @@ fun TopNews(showDetail: () -> Unit,
 //}
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TopNewsSmallItem(article: Article,
                      modifier: Modifier = Modifier,
-                     onClickArticle : () -> Unit) {
+                     onClickArticle : () -> Unit,
+                     onLongClickArticle : () -> Unit
+                     ) {
     Card(modifier = Modifier
         .clip(RoundedCornerShape(8.dp))
-        .clickable {
-            onClickArticle()
-        },
+        .combinedClickable(
+            onClick = { onClickArticle() },
+            onLongClick = { onLongClickArticle() }
+        )
+        ,
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -160,6 +167,7 @@ fun Preview_TopNewsItem(){
     val article = Article(null, null, "bla bla bla bla dede", "hadi trumps bla bla", "", "", "March 5,01:01", "")
     TopNewsSmallItem(
         article = article,
-        onClickArticle = {}
+        onClickArticle = {},
+        onLongClickArticle = {}
     )
 }

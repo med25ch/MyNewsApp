@@ -206,6 +206,7 @@ fun NewsCategoriesTabRow(
                                     TopNewsSmallItem(
                                         article = article,
                                         modifier = modifier,
+                                        onLongClickArticle = {},
                                         onClickArticle = {
                                             //topNewsViewModel.saveArticleToDb(article)
                                             //showDetail()
