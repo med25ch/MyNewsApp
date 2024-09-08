@@ -7,6 +7,7 @@ import com.example.mynewsapp.repositories.COUNTRY
 import com.example.mynewsapp.repositories.NewsArticlesRepo
 import com.example.mynewsapp.retrofit.Article
 import com.example.mynewsapp.retrofit.ArticlesResult
+import com.example.mynewsapp.retrofit.toArticleEntity
 import com.example.mynewsapp.retrofit.toTemporaryArticleEntity
 import com.example.mynewsapp.room.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -68,14 +69,26 @@ class TopNewsViewModel @Inject constructor(
         }
     }
 
+    fun saveTemporaryArticleToDb(article: Article) {
+        viewModelScope.launch(IO) {
+            try{
+                articlesRoomRepository.deleteAllTemporaryArticle()
+                val temporaryArticleEntity = article.toTemporaryArticleEntity()
+                articlesRoomRepository.insertTemporaryArticle(temporaryArticleEntity)
+            }catch (e : Exception){
+                Log.e("saveTemporaryArticleToDb", "Error : ${e.message}")
+            }
+
+        }
+    }
+
     fun saveArticleToDb(article: Article) {
         viewModelScope.launch(IO) {
             try{
-                val temporaryArticleEntity = article.toTemporaryArticleEntity()
-                articlesRoomRepository.deleteAllTemporaryArticle()
-                articlesRoomRepository.insertTemporaryArticle(temporaryArticleEntity)
+                val temporaryArticleEntity = article.toArticleEntity()
+                articlesRoomRepository.insert(temporaryArticleEntity)
             }catch (e : Exception){
-                Log.e("saveArticleToDb", "Error fetching articles: ${e.message}")
+                Log.e("saveArticleToDb", "Error : ${e.message}")
             }
 
         }

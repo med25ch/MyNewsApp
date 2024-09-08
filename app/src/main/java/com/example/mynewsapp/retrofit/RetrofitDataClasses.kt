@@ -14,7 +14,8 @@ data class Article(
     @SerializedName("url") var url: String? = null,
     @SerializedName("urlToImage") var urlToImage: String? = null,
     @SerializedName("publishedAt") var publishedAt: String? = null,
-    @SerializedName("content") var content: String? = null
+    @SerializedName("content") var content: String? = null,
+    var id : Int = 0,
 )
 
 data class Source(
@@ -50,7 +51,22 @@ fun Article.toArticleEntity()  : ArticleEntity {
         url = this.url ?: "",
         urlToImage = this.urlToImage ?: "",
         publishedAt = this.publishedAt ?: "",
-        content = this.content ?: ""
+        content = this.content ?: "",
+        id = this.id
+    )
+}
+
+fun ArticleEntity.toArticle()  : Article {
+    return Article(
+
+        author = this.author ?: "",
+        title = this.title ?: "",
+        description = this.description ?: "",
+        url = this.url ?: "",
+        urlToImage = this.urlToImage ?: "",
+        publishedAt = this.publishedAt ?: "",
+        content = this.content ?: "",
+        id = this.id
     )
 }
 

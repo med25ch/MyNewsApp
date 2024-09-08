@@ -7,6 +7,7 @@ import com.example.mynewsapp.room.Repository
 import com.example.mynewsapp.room.TemporaryArticleEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -39,6 +40,7 @@ class DetailScreenViewModel @Inject constructor(
             }
             .collect {
                 try {
+
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         temporaryArticleEntity = it
