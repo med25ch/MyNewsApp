@@ -2,6 +2,8 @@
 
 An Android News Application built using modern Android development tools and frameworks. This app showcases the latest headlines, breaking news, and in-depth articles from multiple news sources. It is developed with Jetpack Compose for a fully declarative UI, utilizing the best practices for clean architecture and MVVM design pattern.
 
+<img src="https://github.com/med25ch/MyNewsApp/blob/main/screenshots/NewsApp.png"></img>
+
 ## Features
 
 - Breaking News Feed: Real-time updates from various news sources.
